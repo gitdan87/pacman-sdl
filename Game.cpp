@@ -35,12 +35,16 @@ const  Uint8* Game::handleEvents() {
 }
 
 // aggiornamento logica
-void Game::update(float dt) {
+void Game::updatePacman(float dt) {
     pacman.update(dt, map);
+}
 
+// aggiornamento logica
+void Game::updateGhosts(float dt) {
     for (auto& g : ghosts)
         g.update(dt, map, pacman.x, pacman.y);
 }
+
 
 // rendering scena
 void Game::render() {

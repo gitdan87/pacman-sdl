@@ -23,7 +23,9 @@ public:
 
 
     const  Uint8* handleEvents(); // input utente
-    void update(float dt); // logica gioco
+    void updatePacman(float dt); // logica gioco
+    void updateGhosts(float dt); // logica gioco
+
     void render(); // disegno
 
     

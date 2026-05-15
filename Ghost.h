@@ -22,7 +22,7 @@ private:
     int dirY = 0; // direzione corrente Y
 
     float moveTimer = 0.0f;      // timer movimento
-    float moveInterval = 0.5f;  // velocit� movimento
+    float moveInterval = 1.0f;  // velocit� movimento
 
     bool isVulnerable = false; // stato vulnerabile 
 

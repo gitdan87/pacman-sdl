@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
 
     while (game.running) {
         const Uint8* state= game.handleEvents();
-        game.update(0.16f); // dt fisso ~60 FPS
+        game.updatePacman(0.16f); // dt fisso ~60 FPS
 
 		if (game.isEnemyAt(game.pacman.x, game.pacman.y)) {
 			if (game.isGhostVulnerable(game.pacman.x, game.pacman.y)) {
@@ -46,6 +46,7 @@ int main(int argc, char* argv[]) {
 			game.map.setTile(game.pacman.x, game.pacman.y, 0); // rimuovi la pallina
         }
 
+        game.updateGhosts(0.16f); // dt fisso ~60 FPS
 
 
 		if (game.pacman.x == game.cherry.x && game.pacman.y == game.cherry.y && game.cherry.isActive()) {
