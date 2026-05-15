@@ -1,5 +1,6 @@
 #include "Game.h"
 #include <algorithm>
+#include "config.h"
 
 // inizializzazione SDL e creazione finestra/render
 bool Game::init() {
@@ -48,7 +49,7 @@ void Game::updateGhosts(float dt) {
 
 // rendering scena
 void Game::render() {
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_SetRenderDrawColor(renderer, BACKGROUND_COLOR, 255);
     SDL_RenderClear(renderer);
 
     map.render(renderer);

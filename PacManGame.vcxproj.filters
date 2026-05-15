@@ -30,6 +30,9 @@
     <ClInclude Include="Cherry.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Map.cpp">

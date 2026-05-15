@@ -1,5 +1,6 @@
 #include "Map.h"
 #include "utility.h"
+#include "config.h"
 // mappa statica: 1 = muro, 0 = vuoto
 //int defaultMap[MAP_H][MAP_W] = {
 //    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -52,7 +53,7 @@ void Map::render(SDL_Renderer* r) {
              if (defaultMap[y][x] == 1)
                  SDL_SetRenderDrawColor(r, 0, 0, 255, 255); // muro
              else if (defaultMap[y][x] == 0)
-                 SDL_SetRenderDrawColor(r, 0, 0, 0, 255);   // vuoto
+                 SDL_SetRenderDrawColor(r, BACKGROUND_COLOR, 255);   // vuoto
             
              SDL_Rect rect = { x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE };
              SDL_RenderFillRect(r, &rect);
