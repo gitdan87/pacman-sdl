@@ -1,6 +1,7 @@
 #include "Pacman.h"
 #include "Map.h"
 #include "Game.h"
+#include "config.h"
 
 // input tastiera: memorizza direzione richiesta
 void Pacman::handleInput(const Uint8* state, Map& map) {
@@ -42,7 +43,7 @@ void Pacman::update(float dt, Map& map) {
 
 // disegno Pacman (giallo)
 void Pacman::render(SDL_Renderer* r) {
-    SDL_SetRenderDrawColor(r, 255, 255, 0, 255);
+    SDL_SetRenderDrawColor(r, COLOR_PACMAN, 255);
 
     SDL_Rect rect = { x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE };
     SDL_RenderFillRect(r, &rect);

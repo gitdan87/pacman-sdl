@@ -1,6 +1,7 @@
 #include "Ghost.h"
 #include "Map.h"
 #include <cstdlib>
+#include "config.h"
 
 Ghost::Ghost(int x, int y) {
      this->x = x;
@@ -75,12 +76,12 @@ void Ghost::update(float dt, Map& map, int pacmanX, int pacmanY) {
 
 // disegno fantasma (rosso)
 void Ghost::render(SDL_Renderer* r) {
-     if(isVulnerable) {
-         SDL_SetRenderDrawColor(r, 0, 0, 255, 255); // blu se vulnerabile
-	}
-     else {
-         SDL_SetRenderDrawColor(r, 255, 0, 0, 255);
-     }
+    if (isVulnerable) {
+        SDL_SetRenderDrawColor(r, COLOR_GHOST_VULNERABLE, 255);
+    }
+    else {
+        SDL_SetRenderDrawColor(r, COLOR_GHOST, 255);
+    }
 
      SDL_Rect rect = { x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE };
      SDL_RenderFillRect(r, &rect);
@@ -88,7 +89,7 @@ void Ghost::render(SDL_Renderer* r) {
 
 void Ghost::setVulnerable() {
      isVulnerable = true;
-     vulnerableTimer = 10; // durata vulnerabilità in secondi
+     vulnerableTimer = GHOST_VULNERABLE_TIME; // durata vulnerabilità in secondi
 }
 
 bool Ghost::getVulnerable() const {

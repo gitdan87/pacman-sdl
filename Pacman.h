@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL.h>
 #include "Map.h"
+#include "config.h"
 
 // Player controllato da tastiera
 class Pacman {
@@ -20,5 +21,5 @@ private:
     int nextDirY = 0;
 
     float moveTimer = 0.0f;
-    float moveInterval = 0.5f; // velocità movimento
+    float moveInterval = PACMAN_MOVE_INTERVAL; // velocità movimento
 };

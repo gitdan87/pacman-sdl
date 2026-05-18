@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "config.h"
 
 int main(int argc, char* argv[]) {
     Game game;
@@ -31,7 +32,7 @@ int main(int argc, char* argv[]) {
 
     while (game.running) {
         const Uint8* state= game.handleEvents();
-        game.updatePacman(0.16f); // dt fisso ~60 FPS
+        game.updatePacman(FIXED_DT);
 
 		if (game.isEnemyAt(game.pacman.x, game.pacman.y)) {
 			if (game.isGhostVulnerable(game.pacman.x, game.pacman.y)) {
@@ -46,7 +47,7 @@ int main(int argc, char* argv[]) {
 			game.map.setTile(game.pacman.x, game.pacman.y, 0); // rimuovi la pallina
         }
 
-        game.updateGhosts(0.16f); // dt fisso ~60 FPS
+        game.updateGhosts(FIXED_DT);
 
 
 		if (game.pacman.x == game.cherry.x && game.pacman.y == game.cherry.y && game.cherry.isActive()) {
@@ -55,11 +56,8 @@ int main(int argc, char* argv[]) {
             game.moveCherry(); // posiziona una nuova ciliegia
         }
 
-
-        
-
         game.render();
-        SDL_Delay(16);
+        SDL_Delay(FRAME_TIME_MS);
     }
     game.clean();
 

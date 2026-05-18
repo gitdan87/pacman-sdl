@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL.h>
 #include "Map.h"
+#include "config.h"
 
 // Fantasma: movimento semplice casuale
 class Ghost {
