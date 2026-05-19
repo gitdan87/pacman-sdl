@@ -23,7 +23,7 @@ private:
     int dirY = 0; // direzione corrente Y
 
     float moveTimer = 0.0f;      // timer movimento
-    float moveInterval = 1.0f;  // velocit� movimento
+    float moveInterval = GHOST_MOVE_INTERVAL;  // velocità movimento
 
     bool isVulnerable = false; // stato vulnerabile 
 
