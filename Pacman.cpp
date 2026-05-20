@@ -24,18 +24,15 @@ void Pacman::update(float dt, Map& map) {
     int tryX = x + nextDirX;
     int tryY = y + nextDirY;
 
+    //se la nuova posizione non è il muro
     if (!map.isWall(tryX, tryY)) {
-        dirX = nextDirX;
-        dirY = nextDirY;
+        //imposto la nuova posizione
+        x = tryX;
+        y = tryY;
     }
-
-    // movimento effettivo
-    int nx = x + dirX;
-    int ny = y + dirY;
-
-    if (!map.isWall(nx, ny)) {
-        x = nx;
-        y = ny;
+    else {
+        //se è il muro
+        //non faccio nulla! -> il pacman si ferma
     }
 
     
@@ -45,8 +42,12 @@ void Pacman::update(float dt, Map& map) {
 void Pacman::render(SDL_Renderer* r) {
     SDL_SetRenderDrawColor(r, COLOR_PACMAN, 255);
 
-    SDL_Rect rect = { x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE };
-    SDL_RenderFillRect(r, &rect);
-
+	int startDeg, endDeg;
+	if (nextDirX == 1) { startDeg = 30; endDeg = 330; } // destra
+    else if(nextDirX == -1) { startDeg = 210; endDeg = 150; } // sinistra
+    else if(nextDirY == -1) { startDeg = 300; endDeg = 240; } // su
+    else if(nextDirY == 1) { startDeg = 120; endDeg = 60; } // giù
+    else { startDeg = 30; endDeg = 330; } // fermo, default apertura
+	SDL_RenderFillArc(r, x * TILE_SIZE + TILE_SIZE / 2, y * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE / 2, startDeg, endDeg);
     
 }

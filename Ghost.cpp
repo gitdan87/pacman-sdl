@@ -2,6 +2,7 @@
 #include "Map.h"
 #include <cstdlib>
 #include "config.h"
+#include "utility.h"
 
 Ghost::Ghost(int x, int y) {
      this->x = x;
@@ -11,6 +12,15 @@ Ghost::Ghost(int x, int y) {
 
 // Aggiornamento del fantasma con AI: inseguimento di Pacman o fuga se vulnerabile
 void Ghost::update(float dt, Map& map, int pacmanX, int pacmanY) {
+
+
+    if (isVulnerable) {
+        vulnerableTimer -= dt;
+        if (vulnerableTimer <= 0)
+            isVulnerable = false;
+    }
+
+
     moveTimer += dt;
 
     if (moveTimer < moveInterval)
@@ -67,14 +77,10 @@ void Ghost::update(float dt, Map& map, int pacmanX, int pacmanY) {
         y = ny;
     }
 
-    if (isVulnerable) {
-        vulnerableTimer -= dt;
-        if (vulnerableTimer <= 0)
-            isVulnerable = false;
-    }
+    
 }
 
-// disegno fantasma (rosso)
+// disegno fantasma
 void Ghost::render(SDL_Renderer* r) {
     if (isVulnerable) {
         SDL_SetRenderDrawColor(r, COLOR_GHOST_VULNERABLE, 255);
@@ -83,8 +89,12 @@ void Ghost::render(SDL_Renderer* r) {
         SDL_SetRenderDrawColor(r, COLOR_GHOST, 255);
     }
 
-     SDL_Rect rect = { x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE };
-     SDL_RenderFillRect(r, &rect);
+     
+    //SDL_RenderFillCircle(r, x * TILE_SIZE + TILE_SIZE / 2, y * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE / 2 - 1);
+    SDL_Rect rect = { x * TILE_SIZE+2, y * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE - 3, TILE_SIZE / 2 - 2 };
+    SDL_RenderFillRect(r, &rect);
+	SDL_RenderFillArc(r, x * TILE_SIZE + TILE_SIZE / 2, y * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE / 2 - 1, 180, 360);
+
 }
 
 void Ghost::setVulnerable() {

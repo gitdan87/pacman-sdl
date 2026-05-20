@@ -36,14 +36,14 @@ const  Uint8* Game::handleEvents() {
 }
 
 // aggiornamento logica
-void Game::updatePacman(float dt) {
-    pacman.update(dt, map);
+void Game::updatePacman() {
+    pacman.update(FIXED_DT, map);
 }
 
 // aggiornamento logica
-void Game::updateGhosts(float dt) {
+void Game::updateGhosts() {
     for (auto& g : ghosts)
-        g.update(dt, map, pacman.x, pacman.y);
+        g.update(FIXED_DT, map, pacman.x, pacman.y);
 }
 
 
@@ -61,6 +61,7 @@ void Game::render() {
 	cherry.render(renderer);
 
     SDL_RenderPresent(renderer);
+    SDL_Delay(FRAME_TIME_MS);
 }
 
 bool Game::isGhostVulnerable(int x, int y)
