@@ -25,3 +25,6 @@ constexpr float FIXED_DT = 1.0f/FPS;               // delta time fisso usato nel
 constexpr float PACMAN_MOVE_INTERVAL = 0.080f; // intervallo di movimento del player (secondi tra un passo e l’altro)
 constexpr float GHOST_MOVE_INTERVAL = 0.100f; // intervallo di movimento dei fantasmi
 constexpr float GHOST_VULNERABLE_TIME = 10.0f; // durata stato vulnerabile dei fantasmi (secondi)
+
+
+typedef const Uint8* KeyboardState; 

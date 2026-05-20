@@ -95,6 +95,8 @@ mappa solo bordi:
 
 # 5) Aggiungiamo i fantasmi
 
+mostrare prima il codice con solo i fantasmi aggiunti e poi inserire `g.updateGhosts();`
+
 ```cpp
     Game g;
     g.init();
@@ -104,11 +106,12 @@ mappa solo bordi:
     game.pacman.y = 1;
     
 
---> Ghost g1(10, 10);
---> g.addGhost(g1); // creazione dei ghosts iniziali
+    // creazione dei ghosts iniziali
+--> Ghost fantasma1(10, 10);
+--> g.addGhost(fantasma1); 
 
---> Ghost g2(15, 5);
---> g.addGhost(g2); // creazione dei ghosts iniziali
+--> Ghost fantasma2(15, 5);
+--> g.addGhost(fantasma2); 
 
 
 
@@ -116,6 +119,43 @@ mappa solo bordi:
         g.handleEvents();
         g.updatePacman();
 
+-->     g.updateGhosts();
+        g.render();
+    }
+
+    g.clean();
+```
+
+# 6) Logica del gioco
+
+spiegare come possiamo modificare la logica a piacimento
+
+```cpp
+    Game g;
+    g.init();
+
+    // posizione iniziale player
+    g.pacman.x = 3;
+    g.pacman.y = 1;
+
+    // creazione dei ghosts iniziali
+    Ghost fantasma1(10, 10);
+    g.addGhost(fantasma1); 
+
+    Ghost fantasma2(15, 5);
+    g.addGhost(fantasma2); 
+
+    
+    while (g.running) {
+        g.handleEvents();
+        g.updatePacman();
+
+-->     //termina il gioco se Pacman collide con un fantasma
+-->     if (g.isEnemyAt(g.pacman.x, g.pacman.y)) {
+-->         g.running = false;
+-->     }
+
+        g.updateGhosts();
         g.render();
     }
 
@@ -180,4 +220,13 @@ mappa solo bordi:
  }
  game.clean();
  return 0;
+```
+
+
+# PRO
+
+```cpp
+KeyboardState stato = g.handleEvents();
+if (stato[SDL_SCANCODE_SPACE])
+    g.setGhostsVulnerable();
 ```

@@ -39,6 +39,9 @@ void Ghost::update(float dt, Map& map, int pacmanX, int pacmanY) {
 
     int bestScore = isVulnerable ? -1 : 999999;
 
+    // Prima prova a trovare una direzione senza tornare indietro
+    bool foundValidMove = false;
+
     for (auto& d : dirs) {
         int nx = x + d.dx;
         int ny = y + d.dy;
@@ -46,6 +49,11 @@ void Ghost::update(float dt, Map& map, int pacmanX, int pacmanY) {
         if (map.isWall(nx, ny))
             continue;
 
+        // Evita di tornare immediatamente indietro
+        if (d.dx == -dirX && d.dy == -dirY)
+            continue;
+
+        foundValidMove = true;
         int dist = abs(nx - pacmanX) + abs(ny - pacmanY);
 
         if (!isVulnerable) {
@@ -62,6 +70,34 @@ void Ghost::update(float dt, Map& map, int pacmanX, int pacmanY) {
                 bestScore = dist;
                 bestDx = d.dx;
                 bestDy = d.dy;
+            }
+        }
+    }
+
+    // Se non ci sono altre opzioni, permetti di tornare indietro
+    if (!foundValidMove) {
+        for (auto& d : dirs) {
+            int nx = x + d.dx;
+            int ny = y + d.dy;
+
+            if (map.isWall(nx, ny))
+                continue;
+
+            int dist = abs(nx - pacmanX) + abs(ny - pacmanY);
+
+            if (!isVulnerable) {
+                if (dist < bestScore) {
+                    bestScore = dist;
+                    bestDx = d.dx;
+                    bestDy = d.dy;
+                }
+            }
+            else {
+                if (dist > bestScore) {
+                    bestScore = dist;
+                    bestDx = d.dx;
+                    bestDy = d.dy;
+                }
             }
         }
     }
