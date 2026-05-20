@@ -3,7 +3,7 @@
 
 void Cherry::render(SDL_Renderer* r) {
 
-	if (this->active == false) {
+	if (this->isActive() == false) {
         return; // non disegnare se non attiva
     }
 
@@ -14,9 +14,10 @@ void Cherry::render(SDL_Renderer* r) {
 }
 
 bool Cherry::isActive() const {
-	return active;
+	return x != -1 && y != -1;
 }
 
 void Cherry::collect() {
-	active = false;
+	x = -1;
+	y = -1;
 }

@@ -162,71 +162,224 @@ spiegare come possiamo modificare la logica a piacimento
     g.clean();
 ```
 
-# TOTALE - TODO
+# 7) Ciliegia
+    
+ragionare su dove aggiungere i pezzi di codice per aggiungere funzionalità.
+Abbiamo aggiunto la ciliegia e impostiamo i Ghost "vulnerabili" ma dobbiamo ancora modificare il codice che gesisce la morte se tocchiamo un nemico
 
 ```cpp
- Game game;
+    Game g;
+    g.init();
 
- game.init();
+    // posizione iniziale player
+    g.pacman.x = 3;
+    g.pacman.y = 1;
 
- // posizione iniziale player
- game.pacman.x = 1;
- game.pacman.y = 1;
+    // creazione dei ghosts iniziali
+    Ghost fantasma1(10, 10);
+    g.addGhost(fantasma1); 
 
+    Ghost fantasma2(15, 5);
+    g.addGhost(fantasma2); 
 
- //game.map.setTile(0, 0, 1); // esempio: aggiungo un muro in posizione (0,0)
- //game.map.setTile(0, 1, 1);
- //game.map.setTile(0, 2, 1); 
+--> g.moveCherry();
+    while (g.running) {
+        g.handleEvents();
+        g.updatePacman();
 
- //game.map.setTile(0, 3, 2);
+        //termina il gioco se Pacman collide con un fantasma
+        if (g.isEnemyAt(g.pacman.x, g.pacman.y)) {
+            g.running = false;
+        }
 
-
- Ghost g1(10, 10);
- game.addGhost(g1); // creazione dei ghosts iniziali
-
- Ghost g2(15, 5);
- game.addGhost(g2); // creazione dei ghosts iniziali
-
-
- game.moveCherry(); // posiziona la ciliegia iniziale
-
- while (game.running) {
-     const Uint8* state = game.handleEvents();
-     game.updatePacman();
-
-     if (game.isEnemyAt(game.pacman.x, game.pacman.y)) {
-         if (game.isGhostVulnerable(game.pacman.x, game.pacman.y)) {
-             // rimuovi il fantasma vulnerabile
-             game.removeGhost(game.pacman.x, game.pacman.y);
-         }
-         else
-             game.running = false; // termina il gioco se Pacman viene catturato
-     }
-     if (game.map.isBall(game.pacman.x, game.pacman.y))
-     {
-         game.map.setTile(game.pacman.x, game.pacman.y, 0); // rimuovi la pallina
-     }
-
-     game.updateGhosts();
+-->     if (g.pacman.x == g.cherry.x && g.pacman.y == g.cherry.y ) {
+-->         g.cherry.collect(); // raccogli la ciliegia
+-->         g.setGhostsVulnerable();
+-->         g.moveCherry(); // posiziona una nuova ciliegia
+-->     }
 
 
-     if (game.pacman.x == game.cherry.x && game.pacman.y == game.cherry.y && game.cherry.isActive()) {
-         game.cherry.collect(); // raccogli la ciliegia
-         game.setGhostsVulnerable();
-         game.moveCherry(); // posiziona una nuova ciliegia
-     }
+        g.updateGhosts();
+        g.render();
+    }
 
-     game.render();
- }
- game.clean();
- return 0;
+    g.clean();
 ```
 
 
-# PRO
 
+# 8) Mangiare i nemici
+    
+ragionare su dove aggiungere i pezzi di codice per aggiungere funzionalità.
+Abbiamo aggiunto la ciliegia e impostiamo i Ghost "vulnerabili" ma dobbiamo ancora modificare il codice che gesisce la morte se tocchiamo un nemico
+
+```cpp
+    Game g;
+    g.init();
+
+    // posizione iniziale player
+    g.pacman.x = 3;
+    g.pacman.y = 1;
+
+    // creazione dei ghosts iniziali
+    Ghost fantasma1(10, 10);
+    g.addGhost(fantasma1); 
+
+    Ghost fantasma2(15, 5);
+    g.addGhost(fantasma2); 
+
+    g.moveCherry();
+    while (g.running) {
+        g.handleEvents();
+        g.updatePacman();
+
+        //termina il gioco se Pacman collide con un fantasma
+        if (g.isEnemyAt(g.pacman.x, g.pacman.y)) {
+-->         if (g.isGhostVulnerable(g.pacman.x, g.pacman.y)) {
+-->             g.removeGhost(g.pacman.x, g.pacman.y);    // rimuovi il fantasma vulnerabile
+-->         }
+-->         else{
+-->             g.running = false; // termina il gioco se Pacman viene catturato
+-->         }
+        }
+
+        if (g.pacman.x == g.cherry.x && g.pacman.y == g.cherry.y ) {
+            g.cherry.collect(); // raccogli la ciliegia
+            g.setGhostsVulnerable();
+            g.moveCherry(); // posiziona una nuova ciliegia
+        }
+
+
+        g.updateGhosts();
+        g.render();
+    }
+
+    g.clean();
+```
+
+# 9) Implementiamo le palline
+
+Torniamo nella map.cpp ed inseriamo che al posto degli 0 mettiamo dei 2
+
+i pallini saranno presenti ma non saranno ancora mangiabili, occorre modificare il codice:
+
+```cpp
+    Game g;
+    g.init();
+--> int punteggio=0;
+
+    // posizione iniziale player
+    g.pacman.x = 3;
+    g.pacman.y = 1;
+
+    // creazione dei ghosts iniziali
+    Ghost fantasma1(10, 10);
+    g.addGhost(fantasma1); 
+
+    Ghost fantasma2(15, 5);
+    g.addGhost(fantasma2); 
+
+    g.moveCherry();
+    while (g.running) {
+        g.handleEvents();
+        g.updatePacman();
+
+        //termina il gioco se Pacman collide con un fantasma
+        if (g.isEnemyAt(g.pacman.x, g.pacman.y)) {
+            if (g.isGhostVulnerable(g.pacman.x, g.pacman.y)) {
+                g.removeGhost(g.pacman.x, g.pacman.y);    // rimuovi il fantasma vulnerabile
+            } 
+            else{
+                g.running = false; // termina il gioco se Pacman viene catturato
+            }
+        }
+
+        if (g.pacman.x == g.cherry.x && g.pacman.y == g.cherry.y ) {
+            g.cherry.collect(); // raccogli la ciliegia
+            g.setGhostsVulnerable();
+            g.moveCherry(); // posiziona una nuova ciliegia
+        }
+
+-->     if (g.map.isBall(g.pacman.x, g.pacman.y))
+-->     {
+-->         g.map.setTile(g.pacman.x, g.pacman.y, 0); // rimuovi la pallina
+-->         punteggio = punteggio +1;
+-->     }
+
+        g.updateGhosts();
+        g.render();
+    }
+
+    g.clean();
+```
+
+
+# TODO:
+- provare a modificare i colori
+- modificare le velocità
+- visualizzare il punteggio
+```cpp
+std::string  scoreText = "Pacman - punteggio: " + std::to_string(punteggio);
+g.setWindowTitle(scoreText.c_str()); // cambia titolo finestra
+```
+
+# PRO
+gestione di una pressione di un tasto nel main per ad esempio creare un "cheat" che ci fa mangiare i ghost anche senza mangiare la ciliegia ( premendo spazioo)
 ```cpp
 KeyboardState stato = g.handleEvents();
 if (stato[SDL_SCANCODE_SPACE])
     g.setGhostsVulnerable();
 ```
+
+
+# TOTALE
+
+```cpp
+    Game g;
+    g.init();
+
+    // posizione iniziale player
+    g.pacman.x = 3;
+    g.pacman.y = 1;
+
+    // creazione dei ghosts iniziali
+    Ghost fantasma1(10, 10);
+    g.addGhost(fantasma1); 
+
+    Ghost fantasma2(15, 5);
+    g.addGhost(fantasma2); 
+
+    g.moveCherry();
+    while (g.running) {
+        g.handleEvents();
+        g.updatePacman();
+
+        //termina il gioco se Pacman collide con un fantasma
+        if (g.isEnemyAt(g.pacman.x, g.pacman.y)) {
+            if (g.isGhostVulnerable(g.pacman.x, g.pacman.y)) {
+                g.removeGhost(g.pacman.x, g.pacman.y);    // rimuovi il fantasma vulnerabile
+            }
+            else {
+                g.running = false; // termina il gioco se Pacman viene catturato
+            }
+        }
+
+
+        if (g.pacman.x == g.cherry.x && g.pacman.y == g.cherry.y ) {
+            g.cherry.collect(); // raccogli la ciliegia
+            g.setGhostsVulnerable();
+            g.moveCherry(); // posiziona una nuova ciliegia
+        }
+
+        if (g.map.isBall(g.pacman.x, g.pacman.y))
+        {
+            g.map.setTile(g.pacman.x, g.pacman.y, 0); // rimuovi la pallina
+        }
+        g.updateGhosts();
+        g.render();
+    }
+
+    g.clean();
+    return 0;
+```
+

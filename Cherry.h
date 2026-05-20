@@ -6,9 +6,9 @@
 class Cherry
 {
 public:
-    int x = 0;
-    int y = 0;
-    bool active = false;
+    int x = -1;
+    int y = -1;
+    
 
     void render(SDL_Renderer* r);
     bool isActive() const;

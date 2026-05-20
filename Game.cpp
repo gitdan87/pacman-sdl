@@ -84,7 +84,11 @@ void Game::moveCherry()
     } while (map.isWall(x, y) || (x == pacman.x && y == pacman.y)); // evita muri e posizione di Pacman
     cherry.x = x;
     cherry.y = y;
-    cherry.active = true; // rendi la ciliegia attiva
+}
+
+void Game::setWindowTitle(const char* title)
+{
+	SDL_SetWindowTitle(window, title);
 }
 
 // cleanup SDL

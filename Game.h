@@ -46,6 +46,8 @@ public:
 	
 
     void moveCherry();
+
+	void setWindowTitle(const char* title);
 private:
    
 
