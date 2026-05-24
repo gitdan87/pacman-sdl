@@ -30,6 +30,12 @@ const  Uint8* Game::handleEvents() {
 
     // stato tastiera continuo
     const Uint8* state = SDL_GetKeyboardState(NULL);
+
+
+    //if (state[SDL_SCANCODE_SPACE]) {
+    //    setGhostsVulnerable(); // cheat
+    //}
+
     pacman.handleInput(state, map);
 
     return state;

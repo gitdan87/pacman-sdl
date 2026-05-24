@@ -28,8 +28,8 @@ impostiamo la posizione del pacman
     g.init();
 
 --> // posizione iniziale player
---> game.pacman.x = 1;
---> game.pacman.y = 1;
+--> g.pacman.x = 1;
+--> g.pacman.y = 1;
     
 
     while (g.running) {
@@ -102,8 +102,8 @@ mostrare prima il codice con solo i fantasmi aggiunti e poi inserire `g.updateGh
     g.init();
 
     // posizione iniziale player
-    game.pacman.x = 1;
-    game.pacman.y = 1;
+    g.pacman.x = 1;
+    g.pacman.y = 1;
     
 
     // creazione dei ghosts iniziali
@@ -149,13 +149,13 @@ spiegare come possiamo modificare la logica a piacimento
     while (g.running) {
         g.handleEvents();
         g.updatePacman();
+        g.updateGhosts();
 
 -->     //termina il gioco se Pacman collide con un fantasma
 -->     if (g.isEnemyAt(g.pacman.x, g.pacman.y)) {
 -->         g.running = false;
 -->     }
 
-        g.updateGhosts();
         g.render();
     }
 
@@ -186,6 +186,7 @@ Abbiamo aggiunto la ciliegia e impostiamo i Ghost "vulnerabili" ma dobbiamo anco
     while (g.running) {
         g.handleEvents();
         g.updatePacman();
+        g.updateGhosts();
 
         //termina il gioco se Pacman collide con un fantasma
         if (g.isEnemyAt(g.pacman.x, g.pacman.y)) {
@@ -198,8 +199,6 @@ Abbiamo aggiunto la ciliegia e impostiamo i Ghost "vulnerabili" ma dobbiamo anco
 -->         g.moveCherry(); // posiziona una nuova ciliegia
 -->     }
 
-
-        g.updateGhosts();
         g.render();
     }
 
@@ -259,7 +258,7 @@ Abbiamo aggiunto la ciliegia e impostiamo i Ghost "vulnerabili" ma dobbiamo anco
 
 # 9) Implementiamo le palline
 
-Torniamo nella map.cpp ed inseriamo che al posto degli 0 mettiamo dei 2
+Torniamo nella map.cpp ed inseriamo dei 2 al posto di alcuni 0
 
 i pallini saranno presenti ma non saranno ancora mangiabili, occorre modificare il codice:
 
@@ -324,11 +323,11 @@ g.setWindowTitle(scoreText.c_str()); // cambia titolo finestra
 ```
 
 # PRO
-gestione di una pressione di un tasto nel main per ad esempio creare un "cheat" che ci fa mangiare i ghost anche senza mangiare la ciliegia ( premendo spazioo)
+Gestione di una pressione di un tasto nel main per ad esempio creare un "cheat" che ci fa mangiare i ghost anche senza mangiare la ciliegia ( premendo spazio). Il codice è già presente dentro handleEvents() in game.cpp basta decommentarlo.
 ```cpp
-KeyboardState stato = g.handleEvents();
-if (stato[SDL_SCANCODE_SPACE])
-    g.setGhostsVulnerable();
+if (state[SDL_SCANCODE_SPACE]) {
+   setGhostsVulnerable(); // cheat
+}
 ```
 
 
@@ -337,48 +336,47 @@ if (stato[SDL_SCANCODE_SPACE])
 ```cpp
     Game g;
     g.init();
-
-    // posizione iniziale player
-    g.pacman.x = 3;
+    g.pacman.x = 2;
     g.pacman.y = 1;
+    int punteggio = 0;
+   
 
-    // creazione dei ghosts iniziali
-    Ghost fantasma1(10, 10);
-    g.addGhost(fantasma1); 
-
+	Ghost fantasma1(10, 10);
     Ghost fantasma2(15, 5);
-    g.addGhost(fantasma2); 
+	g.addGhost(fantasma1);
+	g.addGhost(fantasma2);
 
     g.moveCherry();
-    while (g.running) {
-        g.handleEvents();
-        g.updatePacman();
 
-        //termina il gioco se Pacman collide con un fantasma
+    while (g.running) {
+
+		g.handleEvents();
+        g.updatePacman();
+		g.updateGhosts();
+
         if (g.isEnemyAt(g.pacman.x, g.pacman.y)) {
-            if (g.isGhostVulnerable(g.pacman.x, g.pacman.y)) {
-                g.removeGhost(g.pacman.x, g.pacman.y);    // rimuovi il fantasma vulnerabile
-            }
-            else {
-                g.running = false; // termina il gioco se Pacman viene catturato
-            }
+			if (g.isGhostVulnerable(g.pacman.x, g.pacman.y)) {
+                g.removeGhost(g.pacman.x, g.pacman.y); // rimuovi il fantasma vulnerabile
+			} else {
+				g.running = false;
+			}
         }
 
-
-        if (g.pacman.x == g.cherry.x && g.pacman.y == g.cherry.y ) {
+        if (g.pacman.x == g.cherry.x && g.pacman.y == g.cherry.y) {
             g.cherry.collect(); // raccogli la ciliegia
             g.setGhostsVulnerable();
             g.moveCherry(); // posiziona una nuova ciliegia
         }
 
-        if (g.map.isBall(g.pacman.x, g.pacman.y))
-        {
+        if (g.map.isBall(g.pacman.x, g.pacman.y)) {
             g.map.setTile(g.pacman.x, g.pacman.y, 0); // rimuovi la pallina
-        }
-        g.updateGhosts();
+            punteggio = punteggio + 1;
+            string  scoreText = "Pacman - punteggio: " + std::to_string(punteggio);
+            g.setWindowTitle(scoreText.c_str()); // cambia titolo finestra
+		}
+
         g.render();
     }
-
     g.clean();
     return 0;
 ```
